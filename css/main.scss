@@ -1,0 +1,244 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.calculator {
+    height: 550px;
+    width: 420px;
+    margin: 100px auto auto auto;
+    background-color: #000000;
+}
+
+.buttons {
+    background-color: #000000;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 100px 100px 100px 100px;
+    grid-template-rows: 100px 100px 100px 100px 100px;
+    grid-template-areas: "AC AC plusMinus divide"
+        "seven eight nine multiply"
+        "four five six subtract"
+        "one two three add"
+        "zero zero decimal equals";
+}
+
+.calculation {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #ffffff;
+    font-size: 500%;
+    height: 15%;
+    margin: 30px 20px 30px 0;
+    float: right;
+    overflow: hidden;
+}
+
+button {
+    margin: 10px;
+    background-color: #444;
+    transition: 0.5s;
+    border: none;
+    outline: none;
+    border-radius: 50px;
+
+    &:active {
+        background-color: #999;
+        transition: 0s;
+    }
+}
+
+.add {
+    grid-area: add;
+
+    &::before {
+        content: attr(data-button);
+        font-size: 30px;
+    }
+
+    background-color: rgb(255, 123, 0);
+
+    &:focus {
+        background-color: #ffffff;
+    }
+}
+
+.subtract {
+    grid-area: subtract;
+
+    &::before {
+        content: attr(data-button);
+        font-size: 30px;
+    }
+
+    background-color: rgb(255, 123, 0);
+
+    &:focus {
+        background-color: #ffffff;
+    }
+}
+
+.multiply {
+    grid-area: multiply;
+
+    &::before {
+        content: attr(data-button);
+        font-size: 30px;
+    }
+
+    background-color: rgb(255, 123, 0);
+
+    &:focus {
+        background-color: #ffffff;
+    }
+}
+
+.divide {
+    grid-area: divide;
+
+    &::before {
+        content: attr(data-button);
+        font-size: 30px;
+    }
+
+    background-color: rgb(255, 123, 0);
+
+    &:focus {
+        background-color: #ffffff;
+    }
+}
+
+.zero {
+    grid-area: zero;
+
+    &::before {
+        content: attr(data-button);
+        font-size: 30px;
+    }
+}
+
+.one {
+    grid-area: one;
+
+    &::before {
+        content: attr(data-button);
+        font-size: 30px;
+    }
+}
+
+.two {
+    grid-area: two;
+
+    &::before {
+        content: attr(data-button);
+        font-size: 30px;
+    }
+}
+
+.three {
+    grid-area: three;
+
+    &::before {
+        content: attr(data-button);
+        font-size: 30px;
+    }
+}
+
+.four {
+    grid-area: four;
+
+    &::before {
+        content: attr(data-button);
+        font-size: 30px;
+    }
+}
+
+.five {
+    grid-area: five;
+
+    &::before {
+        content: attr(data-button);
+        font-size: 30px;
+    }
+}
+
+.six {
+    grid-area: six;
+
+    &::before {
+        content: attr(data-button);
+        font-size: 30px;
+    }
+}
+
+.seven {
+    grid-area: seven;
+
+    &::before {
+        content: attr(data-button);
+        font-size: 30px;
+    }
+}
+
+.eight {
+    grid-area: eight;
+
+    &::before {
+        content: attr(data-button);
+        font-size: 30px;
+    }
+}
+
+.nine {
+    grid-area: nine;
+
+    &::before {
+        content: attr(data-button);
+        font-size: 30px;
+    }
+}
+
+.AC {
+    grid-area: AC;
+
+    &::before {
+        content: attr(data-button);
+        font-size: 30px;
+    }
+
+    background-color: #999;
+
+    &:active {
+        background-color: #ffffff;
+    }
+}
+
+.equals {
+    grid-area: equals;
+
+    &::before {
+        content: attr(data-button);
+        font-size: 30px;
+    }
+
+    background-color: rgb(255, 123, 0);
+
+    &:active {
+        background-color: #ffffff;
+    }
+}
+
+.decimal {
+    grid-area: decimal;
+
+    &::before {
+        content: attr(data-button);
+        font-size: 30px;
+    }
+}
