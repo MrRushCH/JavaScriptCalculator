@@ -8,13 +8,27 @@ class Calculator {
   calculation = [];
 
   equalsPressed = false;
+  operators = {
+    "+": function (a, b) {
+      return a + b;
+    },
+    "-": function (a, b) {
+      return a - b;
+    },
+    "*": function (a, b) {
+      return a * b;
+    },
+    "/": function (a, b) {
+      return a / b;
+    }
+  };
 
   scanButton() {
     let self = this;
     var buttons = this.buttons;
     var display = this.display;
-    buttons.forEach(function(item) {
-      item.addEventListener("click", function() {
+    buttons.forEach(function (item) {
+      item.addEventListener("click", function () {
         if (item.classList.contains("number")) {
           self.calculation.push(item.dataset.button);
           if (display.innerHTML === "0") {
@@ -23,15 +37,13 @@ class Calculator {
             display.innerHTML += item.dataset.button;
           }
         } else if (item.dataset.button === "=") {
-          self.calculate();
+          self.handleInput();
         } else if (
           self.calculation.indexOf("+") !== -1 ||
           self.calculation.indexOf("-") !== -1 ||
           self.calculation.indexOf("*") !== -1 ||
           self.calculation.indexOf("/") !== -1
         ) {
-          self.calculation.push(item.dataset.button);
-
           var deleteToHere = self.calculation.indexOf(item.dataset.button);
           for (var i = 0; i < deleteToHere - 1; i++) {
             self.calculation.splice(i);
@@ -41,6 +53,7 @@ class Calculator {
           var [firstNumber, operator, secondNumber] = self.scanArray(
             self.calculation
           );
+          self.calculation.push(item.dataset.button);
           console.log(firstNumber, operator, secondNumber);
           self.calculation[0] = self.calculateResult(
             firstNumber,
@@ -61,7 +74,7 @@ class Calculator {
   handleInput() {
     var result = 0;
     var self = this;
-    this.ac.addEventListener("click", function() {
+    this.ac.addEventListener("click", function () {
       self.calculation = [];
       self.display.innerHTML = 0;
     });
@@ -80,7 +93,7 @@ class Calculator {
     var number2 = 0;
     var operator = null;
 
-    calculation.forEach(function(item) {
+    calculation.forEach(function (item) {
       if (
         !(item === "+" || item === "-" || item === "*" || item === "/") &&
         operator === null
@@ -99,22 +112,7 @@ class Calculator {
     var result = null;
     firstNumber = parseFloat(firstNumber);
     secondNumber = parseFloat(secondNumber);
-    switch (operator) {
-      case "+":
-        result = firstNumber + secondNumber;
-        break;
-      case "-":
-        result = firstNumber - secondNumber;
-        break;
-      case "*":
-        result = firstNumber * secondNumber;
-        break;
-      case "/":
-        result = firstNumber / secondNumber;
-        break;
-      default:
-        break;
-    }
+    result = this.operators[operator](firstNumber, secondNumber);
     return result;
   }
 }
