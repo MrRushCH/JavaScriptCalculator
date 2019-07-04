@@ -7,6 +7,16 @@ class Calculator {
 
   calculation = [];
 
+  result = 0;
+
+  isOperator = function (n) {
+    if (n === "+" || n === "-" || n === "*" || n === "/") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   equalsPressed = false;
   operators = {
     "+": function (a, b) {
@@ -25,46 +35,41 @@ class Calculator {
 
   scanButton() {
     let self = this;
-    var buttons = this.buttons;
-    var display = this.display;
-    buttons.forEach(function (item) {
+    self.buttons.forEach(function (item) {
       item.addEventListener("click", function () {
         if (item.classList.contains("number")) {
+          if (self.result !== 0 && !self.isOperator(self.calculation[self.calculation.length - 1])) {
+            self.result = 0;
+            self.display.innerHTML = "0";
+            self.calculation = [];
+          }
           self.calculation.push(item.dataset.button);
-          if (display.innerHTML === "0") {
-            display.innerHTML = item.dataset.button;
+          if (self.display.innerHTML === "0") {
+            self.display.innerHTML = item.dataset.button;
           } else {
-            display.innerHTML += item.dataset.button;
+            self.display.innerHTML += item.dataset.button;
           }
         } else if (item.dataset.button === "=") {
           self.handleInput();
+        } else if (item.classList.contains("AC")) {
+          self.calculation = [];
+          self.display.innerHTML = 0;
         } else if (
           self.calculation.indexOf("+") !== -1 ||
           self.calculation.indexOf("-") !== -1 ||
           self.calculation.indexOf("*") !== -1 ||
           self.calculation.indexOf("/") !== -1
         ) {
-          var deleteToHere = self.calculation.indexOf(item.dataset.button);
-          for (var i = 0; i < deleteToHere - 1; i++) {
-            self.calculation.splice(i);
-          }
-          display.innerHTML = "0";
-
-          var [firstNumber, operator, secondNumber] = self.scanArray(
-            self.calculation
-          );
+          self.display.innerHTML = "0";
+          var [firstNumber, operator, secondNumber] = self.convertArray(self.calculation);
+          console.log("temporary calculation: ", firstNumber, operator, secondNumber);
+          self.calculation = [];
+          self.calculation.push(self.temporaryCalculation(firstNumber, operator, secondNumber));
           self.calculation.push(item.dataset.button);
-          console.log(firstNumber, operator, secondNumber);
-          self.calculation[0] = self.calculateResult(
-            firstNumber,
-            operator,
-            secondNumber
-          );
-          console.log(self.calculation);
-          console.log("first operator: ", operator);
         } else {
           self.calculation.push(item.dataset.button);
-          display.innerHTML = "0";
+          console.log("first operator:", item.dataset.button);
+          self.display.innerHTML = "0";
         }
       });
     });
@@ -72,34 +77,41 @@ class Calculator {
 
   //Handles calculation and displays result on calculator display
   handleInput() {
-    var result = 0;
     var self = this;
     this.ac.addEventListener("click", function () {
       self.calculation = [];
       self.display.innerHTML = 0;
     });
-    var [firstNumber, operator, secondNumber] = this.scanArray(
+    var [firstNumber, operator, secondNumber] = this.convertArray(
       this.calculation
     );
-    console.log("second operator: ", operator);
-    result = this.calculateResult(firstNumber, operator, secondNumber);
-    console.log("result:", result);
-    this.display.innerHTML = result;
+    console.log("array: ", this.calculation);
+    this.result = this.calculateResult(firstNumber, operator, secondNumber);
+    console.log("result:", this.result);
+    this.display.innerHTML = this.result;
+  }
+
+  temporaryCalculation(firstNumber, operator, secondNumber) {
+    var result = this.calculateResult(firstNumber, operator, secondNumber);
+    return result;
   }
 
   //Returnns ordered Array: [number1, operator, number2]
-  scanArray(calculation) {
+  convertArray(array) {
+    var self = this;
     var number1 = 0;
     var number2 = 0;
     var operator = null;
 
-    calculation.forEach(function (item) {
+    array.forEach(function (item) {
       if (
-        !(item === "+" || item === "-" || item === "*" || item === "/") &&
-        operator === null
-      ) {
+        !(self.isOperator(item)) && operator === null) {
+        var setFirstNumber = true;
+      }
+
+
+      if (setFirstNumber) {
         number1 += item;
-        calculation.slice(calculation.indexOf(item));
       } else if (operator === null) {
         operator = item;
       } else {
@@ -112,7 +124,9 @@ class Calculator {
     var result = null;
     firstNumber = parseFloat(firstNumber);
     secondNumber = parseFloat(secondNumber);
+    console.log(firstNumber, operator, secondNumber);
     result = this.operators[operator](firstNumber, secondNumber);
+    console.log("operator:", operator);
     return result;
   }
 }
