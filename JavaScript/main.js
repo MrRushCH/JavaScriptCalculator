@@ -10,35 +10,41 @@ class Calculator {
   equalsPressed = false;
   //calculates a result from operator, a and b
   operators = {
-    "+": function(a, b) {
+    "+": function (a, b) {
       return a + b;
     },
-    "-": function(a, b) {
+    "-": function (a, b) {
       return a - b;
     },
-    "*": function(a, b) {
+    "*": function (a, b) {
       return a * b;
     },
-    "/": function(a, b) {
+    "/": function (a, b) {
       return a / b;
     }
   };
 
+  lastElement(array) {
+    return array.length - 1;
+  }
+  isLastElementOperator(array) {
+    this.isOperator(array[this.lastElement(array)]);
+  }
+
+  reset() {
+    this.display.innerHTML = null;
+    this.calculation = [];
+    this.result = 0;
+  }
+
+  //Checks if an array contains an operator and returns the according value
   containsOperator(array) {
-    if (
-      array.indexOf("+") !== -1 ||
-      array.indexOf("-") !== -1 ||
-      array.indexOf("*") !== -1 ||
-      array.indexOf("/") !== -1
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+    var hasOperator = array.includes("+") || array.includes("-") || array.includes("*") || array.includes("/");
+    return hasOperator;
   }
 
   //Checks if parameter is an operator
-  isOperator = function(n) {
+  isOperator = function (n) {
     if (n === "+" || n === "-" || n === "*" || n === "/") {
       return true;
     } else {
@@ -49,22 +55,20 @@ class Calculator {
   //scans which button is pressed and executes according actions
   scanButton() {
     let self = this;
-    self.buttons.forEach(function(item) {
-      item.addEventListener("click", function() {
+    self.buttons.forEach(function (item) {
+      item.addEventListener("click", function () {
         if (item.classList.contains("number")) {
           if (self.result !== 0) {
-            if (
-              !self.isOperator(self.calculation[self.calculation.length - 1])
-            ) {
-              self.display.innerHTML = null;
-              self.calculation = [];
-              self.result = 0;
+            if (self.isLastElementOperator(self.calculation)) {
+              self.reset();
             } else {
               self.display.innerHTML = 0;
               self.result = 0;
             }
           }
+
           self.calculation.push(item.dataset.button);
+
           if (
             self.display.innerHTML === "0" ||
             self.isOperator(self.calculation[self.calculation.length - 2])
@@ -73,22 +77,30 @@ class Calculator {
           } else {
             self.display.innerHTML += item.dataset.button;
           }
-        } else if (item.dataset.button === "=") {
-          self.handleInput();
-        } else if (item.classList.contains("AC")) {
-          self.calculation = [];
-          self.display.innerHTML = 0;
-        } else if (self.containsOperator(self.calculation)) {
-          var [firstNumber, operator, secondNumber] = self.convertArray(
-            self.calculation
-          );
-          self.calculation = [];
-          self.calculation.push(
-            self.temporaryCalculation(firstNumber, operator, secondNumber),
-            item.dataset.button
-          );
+
         } else {
-          self.calculation.push(item.dataset.button);
+          switch (true) {
+            case item.dataset.button === "=":
+              self.handleInput();
+              break;
+            case item.dataset.button === "AC":
+              self.reset();
+              break;
+            case self.containsOperator(self.calculation):
+              var [firstNumber, operator, secondNumber] = self.convertArray(
+                self.calculation
+              );
+              self.calculation = [];
+              self.calculation.push(
+                self.temporaryCalculation(firstNumber, operator, secondNumber),
+                item.dataset.button
+              );
+              break;
+            default:
+              self.calculation.push(item.dataset.button);
+              break;
+
+          }
         }
       });
     });
@@ -97,7 +109,7 @@ class Calculator {
   //Handles calculation and displays result on calculator display
   handleInput() {
     var self = this;
-    this.ac.addEventListener("click", function() {
+    this.ac.addEventListener("click", function () {
       self.calculation = [];
       self.display.innerHTML = 0;
     });
@@ -123,17 +135,20 @@ class Calculator {
     var number2 = 0;
     var operator = null;
 
-    array.forEach(function(item) {
+    array.forEach(function (item) {
       if (!self.isOperator(item) && operator === null) {
         var setFirstNumber = true;
       }
-
-      if (setFirstNumber) {
-        number1 += item;
-      } else if (operator === null) {
-        operator = item;
-      } else {
-        number2 += item;
+      switch (true) {
+        case setFirstNumber:
+          number1 += item;
+          break;
+        case operator === null:
+          operator = item;
+          break;
+        default:
+          number2 += item;
+          break;
       }
     });
     return [number1, operator, number2];
@@ -145,7 +160,7 @@ class Calculator {
     firstNumber = parseFloat(firstNumber);
     secondNumber = parseFloat(secondNumber);
     result = this.operators[operator](firstNumber, secondNumber);
-    return result;
+    return Math.round(result * 1000) / 1000;
   }
 }
 const calculator = new Calculator();
