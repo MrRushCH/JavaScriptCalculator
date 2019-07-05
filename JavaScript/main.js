@@ -9,39 +9,48 @@ class Calculator {
 
   result = 0;
 
-  isOperator = function (n) {
+  isOperator = function(n) {
     if (n === "+" || n === "-" || n === "*" || n === "/") {
       return true;
     } else {
       return false;
     }
-  }
+  };
 
   equalsPressed = false;
+
+  //calculates a result from operator, a and b
   operators = {
-    "+": function (a, b) {
+    "+": function(a, b) {
       return a + b;
     },
-    "-": function (a, b) {
+    "-": function(a, b) {
       return a - b;
     },
-    "*": function (a, b) {
+    "*": function(a, b) {
       return a * b;
     },
-    "/": function (a, b) {
+    "/": function(a, b) {
       return a / b;
     }
   };
-
+  //scans which button is pressed and executes according actions
   scanButton() {
     let self = this;
-    self.buttons.forEach(function (item) {
-      item.addEventListener("click", function () {
+    self.buttons.forEach(function(item) {
+      item.addEventListener("click", function() {
         if (item.classList.contains("number")) {
-          if (self.result !== 0 && !self.isOperator(self.calculation[self.calculation.length - 1])) {
-            self.result = 0;
-            self.display.innerHTML = "0";
-            self.calculation = [];
+          if (self.result !== 0) {
+            if (
+              !self.isOperator(self.calculation[self.calculation.length - 1])
+            ) {
+              self.display.innerHTML = null;
+              self.calculation = [];
+              self.result = 0;
+            } else {
+              self.display.innerHTML = 0;
+              self.result = 0;
+            }
           }
           self.calculation.push(item.dataset.button);
           if (self.display.innerHTML === "0") {
@@ -60,15 +69,16 @@ class Calculator {
           self.calculation.indexOf("*") !== -1 ||
           self.calculation.indexOf("/") !== -1
         ) {
-          self.display.innerHTML = "0";
-          var [firstNumber, operator, secondNumber] = self.convertArray(self.calculation);
-          console.log("temporary calculation: ", firstNumber, operator, secondNumber);
+          var [firstNumber, operator, secondNumber] = self.convertArray(
+            self.calculation
+          );
           self.calculation = [];
-          self.calculation.push(self.temporaryCalculation(firstNumber, operator, secondNumber));
-          self.calculation.push(item.dataset.button);
+          self.calculation.push(
+            self.temporaryCalculation(firstNumber, operator, secondNumber),
+            item.dataset.button
+          );
         } else {
           self.calculation.push(item.dataset.button);
-          console.log("first operator:", item.dataset.button);
           self.display.innerHTML = "0";
         }
       });
@@ -78,16 +88,16 @@ class Calculator {
   //Handles calculation and displays result on calculator display
   handleInput() {
     var self = this;
-    this.ac.addEventListener("click", function () {
+    this.ac.addEventListener("click", function() {
       self.calculation = [];
       self.display.innerHTML = 0;
     });
     var [firstNumber, operator, secondNumber] = this.convertArray(
       this.calculation
     );
-    console.log("array: ", this.calculation);
+
     this.result = this.calculateResult(firstNumber, operator, secondNumber);
-    console.log("result:", this.result);
+
     this.display.innerHTML = this.result;
   }
 
@@ -103,12 +113,10 @@ class Calculator {
     var number2 = 0;
     var operator = null;
 
-    array.forEach(function (item) {
-      if (
-        !(self.isOperator(item)) && operator === null) {
+    array.forEach(function(item) {
+      if (!self.isOperator(item) && operator === null) {
         var setFirstNumber = true;
       }
-
 
       if (setFirstNumber) {
         number1 += item;
@@ -124,9 +132,7 @@ class Calculator {
     var result = null;
     firstNumber = parseFloat(firstNumber);
     secondNumber = parseFloat(secondNumber);
-    console.log(firstNumber, operator, secondNumber);
     result = this.operators[operator](firstNumber, secondNumber);
-    console.log("operator:", operator);
     return result;
   }
 }
