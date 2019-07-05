@@ -53,7 +53,10 @@ class Calculator {
             }
           }
           self.calculation.push(item.dataset.button);
-          if (self.display.innerHTML === "0") {
+          if (
+            self.display.innerHTML === "0" ||
+            self.isOperator(self.calculation[self.calculation.length - 2])
+          ) {
             self.display.innerHTML = item.dataset.button;
           } else {
             self.display.innerHTML += item.dataset.button;
@@ -79,7 +82,6 @@ class Calculator {
           );
         } else {
           self.calculation.push(item.dataset.button);
-          self.display.innerHTML = "0";
         }
       });
     });
