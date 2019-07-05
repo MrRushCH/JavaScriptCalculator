@@ -6,19 +6,8 @@ class Calculator {
   ac = document.querySelector(".AC");
 
   calculation = [];
-
   result = 0;
-
-  isOperator = function(n) {
-    if (n === "+" || n === "-" || n === "*" || n === "/") {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
   equalsPressed = false;
-
   //calculates a result from operator, a and b
   operators = {
     "+": function(a, b) {
@@ -34,6 +23,29 @@ class Calculator {
       return a / b;
     }
   };
+
+  containsOperator(array) {
+    if (
+      array.indexOf("+") !== -1 ||
+      array.indexOf("-") !== -1 ||
+      array.indexOf("*") !== -1 ||
+      array.indexOf("/") !== -1
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  //Checks if parameter is an operator
+  isOperator = function(n) {
+    if (n === "+" || n === "-" || n === "*" || n === "/") {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   //scans which button is pressed and executes according actions
   scanButton() {
     let self = this;
@@ -66,12 +78,7 @@ class Calculator {
         } else if (item.classList.contains("AC")) {
           self.calculation = [];
           self.display.innerHTML = 0;
-        } else if (
-          self.calculation.indexOf("+") !== -1 ||
-          self.calculation.indexOf("-") !== -1 ||
-          self.calculation.indexOf("*") !== -1 ||
-          self.calculation.indexOf("/") !== -1
-        ) {
+        } else if (self.containsOperator(self.calculation)) {
           var [firstNumber, operator, secondNumber] = self.convertArray(
             self.calculation
           );
@@ -103,6 +110,7 @@ class Calculator {
     this.display.innerHTML = this.result;
   }
 
+  //Calculates the first 2 numbers of a calculation
   temporaryCalculation(firstNumber, operator, secondNumber) {
     var result = this.calculateResult(firstNumber, operator, secondNumber);
     return result;
@@ -130,6 +138,8 @@ class Calculator {
     });
     return [number1, operator, number2];
   }
+
+  //Calculates the result at the end of a calculation
   calculateResult(firstNumber, operator, secondNumber) {
     var result = null;
     firstNumber = parseFloat(firstNumber);
