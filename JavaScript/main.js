@@ -45,11 +45,8 @@ class Calculator {
 
   //Checks if parameter is an operator
   isOperator = function (n) {
-    if (n === "+" || n === "-" || n === "*" || n === "/") {
-      return true;
-    } else {
-      return false;
-    }
+    var isOperator = n === "+" || n === "-" || n === "*" || n === "/";
+    return isOperator;
   };
 
   //scans which button is pressed and executes according actions
