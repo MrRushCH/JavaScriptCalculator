@@ -24,11 +24,11 @@ class Calculator {
     }
   };
 
-  lastElement(array) {
-    return array.length - 1;
+  element(element, array) {
+    return array.length - element;
   }
-  isLastElementOperator(array) {
-    this.isOperator(array[this.lastElement(array)]);
+  isElementOperator(element, array) {
+    return this.isOperator(array[this.element(element, array)]);
   }
 
   reset() {
@@ -39,8 +39,8 @@ class Calculator {
 
   //Checks if an array contains an operator and returns the according value
   containsOperator(array) {
-    var hasOperator = array.includes("+") || array.includes("-") || array.includes("*") || array.includes("/");
-    return hasOperator;
+    var containsOperator = array.includes("+") || array.includes("-") || array.includes("*") || array.includes("/");
+    return containsOperator;
   }
 
   //Checks if parameter is an operator
@@ -56,24 +56,15 @@ class Calculator {
       item.addEventListener("click", function () {
         if (item.classList.contains("number")) {
           if (self.result !== 0) {
-            if (self.isLastElementOperator(self.calculation)) {
+            if (self.isElementOperator(-1, self.calculation)) {
               self.reset();
             } else {
               self.display.innerHTML = 0;
               self.result = 0;
             }
           }
-
           self.calculation.push(item.dataset.button);
-
-          if (
-            self.display.innerHTML === "0" ||
-            self.isOperator(self.calculation[self.calculation.length - 2])
-          ) {
-            self.display.innerHTML = item.dataset.button;
-          } else {
-            self.display.innerHTML += item.dataset.button;
-          }
+          (self.display.innerHTML === "0" || self.isElementOperator(2, self.calculation)) ? self.display.innerHTML = item.dataset.button: self.display.innerHTML += item.dataset.button;
 
         } else {
           switch (true) {
