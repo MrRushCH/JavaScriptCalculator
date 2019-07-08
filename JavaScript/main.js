@@ -10,16 +10,16 @@ class Calculator {
   equalsPressed = false;
   //calculates a result from operator, a and b
   operators = {
-    "+": function (a, b) {
+    "+": function(a, b) {
       return a + b;
     },
-    "-": function (a, b) {
+    "-": function(a, b) {
       return a - b;
     },
-    "*": function (a, b) {
+    "*": function(a, b) {
       return a * b;
     },
-    "/": function (a, b) {
+    "/": function(a, b) {
       return a / b;
     }
   };
@@ -39,12 +39,16 @@ class Calculator {
 
   //Checks if an array contains an operator and returns the according value
   containsOperator(array) {
-    var containsOperator = array.includes("+") || array.includes("-") || array.includes("*") || array.includes("/");
+    var containsOperator =
+      array.includes("+") ||
+      array.includes("-") ||
+      array.includes("*") ||
+      array.includes("/");
     return containsOperator;
   }
 
   //Checks if parameter is an operator
-  isOperator = function (n) {
+  isOperator = function(n) {
     var isOperator = n === "+" || n === "-" || n === "*" || n === "/";
     return isOperator;
   };
@@ -52,11 +56,11 @@ class Calculator {
   //scans which button is pressed and executes according actions
   scanButton() {
     let self = this;
-    self.buttons.forEach(function (item) {
-      item.addEventListener("click", function () {
+    self.buttons.forEach(function(item) {
+      item.addEventListener("click", function() {
         if (item.classList.contains("number")) {
           if (self.result !== 0) {
-            if (self.isElementOperator(-1, self.calculation)) {
+            if (!self.isElementOperator(1, self.calculation)) {
               self.reset();
             } else {
               self.display.innerHTML = 0;
@@ -64,8 +68,10 @@ class Calculator {
             }
           }
           self.calculation.push(item.dataset.button);
-          (self.display.innerHTML === "0" || self.isElementOperator(2, self.calculation)) ? self.display.innerHTML = item.dataset.button: self.display.innerHTML += item.dataset.button;
-
+          self.display.innerHTML === "0" ||
+          self.isElementOperator(2, self.calculation)
+            ? (self.display.innerHTML = item.dataset.button)
+            : (self.display.innerHTML += item.dataset.button);
         } else {
           switch (true) {
             case item.dataset.button === "=":
@@ -87,7 +93,6 @@ class Calculator {
             default:
               self.calculation.push(item.dataset.button);
               break;
-
           }
         }
       });
@@ -97,7 +102,7 @@ class Calculator {
   //Handles calculation and displays result on calculator display
   handleInput() {
     var self = this;
-    this.ac.addEventListener("click", function () {
+    this.ac.addEventListener("click", function() {
       self.calculation = [];
       self.display.innerHTML = 0;
     });
@@ -123,7 +128,7 @@ class Calculator {
     var number2 = 0;
     var operator = null;
 
-    array.forEach(function (item) {
+    array.forEach(function(item) {
       if (!self.isOperator(item) && operator === null) {
         var setFirstNumber = true;
       }
