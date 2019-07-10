@@ -1,41 +1,37 @@
 class Calculator {
-  numbers = document.querySelectorAll(".number");
-  equals = document.querySelector(".equals");
   display = document.querySelector(".calculation");
   buttons = document.querySelectorAll("button");
-  ac = document.querySelector(".AC");
+  clear = document.querySelector(".AC");
 
   calculation = [];
   result = 0;
-  equalsPressed = false;
-  //calculates a result from operator, a and b
-  operators = {
-    "+": function(a, b) {
-      return a + b;
+  // calculates a result from an operator, number1 and number2
+  executeCalculation = {
+    "+": function(number1, number2) {
+      return number1 + number2;
     },
-    "-": function(a, b) {
-      return a - b;
+    "-": function(number1, number2) {
+      return number1 - number2;
     },
-    "*": function(a, b) {
-      return a * b;
+    "*": function(a, number2) {
+      return number1 * number2;
     },
-    "/": function(a, b) {
-      return a / b;
+    "/": function(a, number2) {
+      return number1 / number2;
     }
   };
 
-  element(element, array) {
-    return array.length - element;
-  }
-  isElementOperator(element, array) {
-    return this.isOperator(array[this.element(element, array)]);
+  // selects an Element in an Array
+  getLastElement(element) {
+    return this.calculation.length - element;
   }
 
-  reset() {
-    this.display.innerHTML = null;
-    this.calculation = [];
-    this.result = 0;
-  }
+  //Checks if parameter is an operator
+  isOperator = function(n) {
+    var regex = RegExp("[-*+/]");
+    var isOperator = regex.test(n);
+    return isOperator;
+  };
 
   //Checks if an array contains an operator and returns the according value
   containsOperator(array) {
@@ -47,38 +43,49 @@ class Calculator {
     return containsOperator;
   }
 
-  //Checks if parameter is an operator
-  isOperator = function(n) {
-    var isOperator = n === "+" || n === "-" || n === "*" || n === "/";
-    return isOperator;
-  };
+  //Checks if last element is an Operator
+  isElementOperator(element) {
+    var lastPressedElement = this.calculation[this.getLastElement(element)];
+    return this.isOperator(lastPressedElement);
+  }
+
+  // resets global Variables
+  resetCalculation() {
+    this.display.innerHTML = null;
+    this.calculation = [];
+    this.result = 0;
+  }
 
   //scans which button is pressed and executes according actions
   scanButton() {
-    let self = this;
+    var self = this;
     self.buttons.forEach(function(item) {
       item.addEventListener("click", function() {
+        var itemValue = item.dataset.button;
+
         if (item.classList.contains("number")) {
+          // auf Funktion auslagern
           if (self.result !== 0) {
             if (!self.isElementOperator(1, self.calculation)) {
-              self.reset();
+              self.resetCalculation();
             } else {
               self.display.innerHTML = 0;
               self.result = 0;
             }
           }
-          self.calculation.push(item.dataset.button);
+          self.calculation.push(itemValue);
+          //Checks when the displayed Number should be replaced and when a number should be added to it
           self.display.innerHTML === "0" ||
           self.isElementOperator(2, self.calculation)
-            ? (self.display.innerHTML = item.dataset.button)
-            : (self.display.innerHTML += item.dataset.button);
+            ? (self.display.innerHTML = itemValue)
+            : (self.display.innerHTML += itemValue);
         } else {
           switch (true) {
-            case item.dataset.button === "=":
+            case itemValue === "=":
               self.handleInput();
               break;
-            case item.dataset.button === "AC":
-              self.reset();
+            case itemValue === "AC":
+              self.resetCalculation();
               break;
             case self.containsOperator(self.calculation):
               var [firstNumber, operator, secondNumber] = self.convertArray(
@@ -87,11 +94,11 @@ class Calculator {
               self.calculation = [];
               self.calculation.push(
                 self.temporaryCalculation(firstNumber, operator, secondNumber),
-                item.dataset.button
+                itemValue
               );
               break;
             default:
-              self.calculation.push(item.dataset.button);
+              self.calculation.push(itemValue);
               break;
           }
         }
@@ -102,7 +109,7 @@ class Calculator {
   //Handles calculation and displays result on calculator display
   handleInput() {
     var self = this;
-    this.ac.addEventListener("click", function() {
+    this.clear.addEventListener("click", function() {
       self.calculation = [];
       self.display.innerHTML = 0;
     });
@@ -121,7 +128,7 @@ class Calculator {
     return result;
   }
 
-  //Returnns ordered Array: [number1, operator, number2]
+  // returns ordered Array: [number1, operator, number2]
   convertArray(array) {
     var self = this;
     var number1 = 0;
@@ -152,7 +159,7 @@ class Calculator {
     var result = null;
     firstNumber = parseFloat(firstNumber);
     secondNumber = parseFloat(secondNumber);
-    result = this.operators[operator](firstNumber, secondNumber);
+    result = this.executeCalculation[operator](firstNumber, secondNumber);
     return Math.round(result * 1000) / 1000;
   }
 }
