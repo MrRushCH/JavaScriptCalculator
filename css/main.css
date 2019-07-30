@@ -48,76 +48,73 @@ button {
   border: none;
   outline: none;
   border-radius: 50px;
+  font-size: 30px;
 }
 
-button:active {
+button::before {
+  content: attr(data-button);
+}
+
+button.operator {
+  background-color: #ff7b00;
+}
+
+button.operator.state-active {
+  background-color: white;
+}
+
+button.number.state-active {
+  -webkit-animation: 400ms linear buttonAnimation;
+          animation: 400ms linear buttonAnimation;
+}
+
+button.AC {
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-area: AC;
   background-color: #999;
-  -webkit-transition: 0s;
-  transition: 0s;
+}
+
+button.AC.state-active {
+  -webkit-animation: 600ms linear acAnimation;
+          animation: 600ms linear acAnimation;
+}
+
+button.equals {
+  -ms-grid-row: 5;
+  -ms-grid-column: 4;
+  grid-area: equals;
+  background-color: #ff7b00;
+}
+
+button.equals.state-active {
+  -webkit-animation: 600ms linear equalsAnimation;
+          animation: 600ms linear equalsAnimation;
 }
 
 .add {
   -ms-grid-row: 4;
   -ms-grid-column: 4;
   grid-area: add;
-  background-color: #ff7b00;
-}
-
-.add::before {
-  content: attr(data-button);
-  font-size: 30px;
-}
-
-.add:focus {
-  background-color: #ffffff;
 }
 
 .subtract {
   -ms-grid-row: 3;
   -ms-grid-column: 4;
   grid-area: subtract;
-  background-color: #ff7b00;
-}
-
-.subtract::before {
-  content: attr(data-button);
-  font-size: 30px;
-}
-
-.subtract:focus {
-  background-color: #ffffff;
 }
 
 .multiply {
   -ms-grid-row: 2;
   -ms-grid-column: 4;
   grid-area: multiply;
-  background-color: #ff7b00;
-}
-
-.multiply::before {
-  content: attr(data-button);
-  font-size: 30px;
-}
-
-.multiply:focus {
-  background-color: #ffffff;
 }
 
 .divide {
   -ms-grid-row: 1;
   -ms-grid-column: 4;
   grid-area: divide;
-  background-color: #ff7b00;
-}
-
-.divide::before {
-  content: attr(data-button);
-  font-size: 30px;
-}
-
-.divide:focus {
-  background-color: #ffffff;
 }
 
 .zero {
@@ -127,20 +124,10 @@ button:active {
   grid-area: zero;
 }
 
-.zero::before {
-  content: attr(data-button);
-  font-size: 30px;
-}
-
 .one {
   -ms-grid-row: 4;
   -ms-grid-column: 1;
   grid-area: one;
-}
-
-.one::before {
-  content: attr(data-button);
-  font-size: 30px;
 }
 
 .two {
@@ -149,20 +136,10 @@ button:active {
   grid-area: two;
 }
 
-.two::before {
-  content: attr(data-button);
-  font-size: 30px;
-}
-
 .three {
   -ms-grid-row: 4;
   -ms-grid-column: 3;
   grid-area: three;
-}
-
-.three::before {
-  content: attr(data-button);
-  font-size: 30px;
 }
 
 .four {
@@ -171,20 +148,10 @@ button:active {
   grid-area: four;
 }
 
-.four::before {
-  content: attr(data-button);
-  font-size: 30px;
-}
-
 .five {
   -ms-grid-row: 3;
   -ms-grid-column: 2;
   grid-area: five;
-}
-
-.five::before {
-  content: attr(data-button);
-  font-size: 30px;
 }
 
 .six {
@@ -193,20 +160,10 @@ button:active {
   grid-area: six;
 }
 
-.six::before {
-  content: attr(data-button);
-  font-size: 30px;
-}
-
 .seven {
   -ms-grid-row: 2;
   -ms-grid-column: 1;
   grid-area: seven;
-}
-
-.seven::before {
-  content: attr(data-button);
-  font-size: 30px;
 }
 
 .eight {
@@ -215,53 +172,10 @@ button:active {
   grid-area: eight;
 }
 
-.eight::before {
-  content: attr(data-button);
-  font-size: 30px;
-}
-
 .nine {
   -ms-grid-row: 2;
   -ms-grid-column: 3;
   grid-area: nine;
-}
-
-.nine::before {
-  content: attr(data-button);
-  font-size: 30px;
-}
-
-.AC {
-  -ms-grid-row: 1;
-  -ms-grid-column: 1;
-  -ms-grid-column-span: 2;
-  grid-area: AC;
-  background-color: #999;
-}
-
-.AC::before {
-  content: attr(data-button);
-  font-size: 30px;
-}
-
-.AC:active {
-  background-color: #ffffff;
-}
-
-.equals {
-  -ms-grid-row: 5;
-  -ms-grid-column: 4;
-  grid-area: equals;
-  background-color: #ff7b00;
-}
-
-.equals::before {
-  content: attr(data-button);
-  font-size: 30px;
-}
-
-.equals:active {
-  background-color: #ffffff;
 }
 
 .decimal {
@@ -270,8 +184,57 @@ button:active {
   grid-area: decimal;
 }
 
-.decimal::before {
-  content: attr(data-button);
-  font-size: 30px;
+@-webkit-keyframes buttonAnimation {
+  0% {
+    background-color: #999;
+  }
+  100% {
+    background-color: #444;
+  }
+}
+
+@keyframes buttonAnimation {
+  0% {
+    background-color: #999;
+  }
+  100% {
+    background-color: #444;
+  }
+}
+
+@-webkit-keyframes equalsAnimation {
+  0% {
+    background-color: white;
+  }
+  100% {
+    background-color: #ff7b00;
+  }
+}
+
+@keyframes equalsAnimation {
+  0% {
+    background-color: white;
+  }
+  100% {
+    background-color: #ff7b00;
+  }
+}
+
+@-webkit-keyframes acAnimation {
+  0% {
+    background-color: white;
+  }
+  100% {
+    background-color: #999;
+  }
+}
+
+@keyframes acAnimation {
+  0% {
+    background-color: white;
+  }
+  100% {
+    background-color: #999;
+  }
 }
 /*# sourceMappingURL=main.css.map */

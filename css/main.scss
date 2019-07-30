@@ -47,198 +47,131 @@ button {
     border: none;
     outline: none;
     border-radius: 50px;
+    font-size: 30px;
 
-    &:active {
+    &::before {
+        content: attr(data-button);
+    }
+
+    &.operator {
+        background-color: rgb(255, 123, 0);
+
+        &.state-active {
+            background-color: white;
+        }
+    }
+
+    &.number {
+        &.state-active {
+            animation: 400ms linear buttonAnimation;
+        }
+    }
+
+    &.AC {
+        grid-area: AC;
         background-color: #999;
-        transition: 0s;
+
+        &.state-active {
+            animation: 600ms linear acAnimation;
+        }
+    }
+
+    &.equals {
+        grid-area: equals;
+        background-color: rgb(255, 123, 0);
+
+        &.state-active {
+            animation: 600ms linear equalsAnimation;
+        }
     }
 }
 
 .add {
     grid-area: add;
-
-    &::before {
-        content: attr(data-button);
-        font-size: 30px;
-    }
-
-    background-color: rgb(255, 123, 0);
-
-    &:focus {
-        background-color: #ffffff;
-    }
 }
 
 .subtract {
     grid-area: subtract;
-
-    &::before {
-        content: attr(data-button);
-        font-size: 30px;
-    }
-
-    background-color: rgb(255, 123, 0);
-
-    &:focus {
-        background-color: #ffffff;
-    }
 }
 
 .multiply {
     grid-area: multiply;
-
-    &::before {
-        content: attr(data-button);
-        font-size: 30px;
-    }
-
-    background-color: rgb(255, 123, 0);
-
-    &:focus {
-        background-color: #ffffff;
-    }
 }
 
 .divide {
     grid-area: divide;
-
-    &::before {
-        content: attr(data-button);
-        font-size: 30px;
-    }
-
-    background-color: rgb(255, 123, 0);
-
-    &:focus {
-        background-color: #ffffff;
-    }
 }
 
 .zero {
     grid-area: zero;
-
-    &::before {
-        content: attr(data-button);
-        font-size: 30px;
-    }
 }
 
 .one {
     grid-area: one;
-
-    &::before {
-        content: attr(data-button);
-        font-size: 30px;
-    }
 }
 
 .two {
     grid-area: two;
-
-    &::before {
-        content: attr(data-button);
-        font-size: 30px;
-    }
 }
 
 .three {
     grid-area: three;
-
-    &::before {
-        content: attr(data-button);
-        font-size: 30px;
-    }
 }
 
 .four {
     grid-area: four;
-
-    &::before {
-        content: attr(data-button);
-        font-size: 30px;
-    }
 }
 
 .five {
     grid-area: five;
-
-    &::before {
-        content: attr(data-button);
-        font-size: 30px;
-    }
 }
 
 .six {
     grid-area: six;
-
-    &::before {
-        content: attr(data-button);
-        font-size: 30px;
-    }
 }
 
 .seven {
     grid-area: seven;
-
-    &::before {
-        content: attr(data-button);
-        font-size: 30px;
-    }
 }
 
 .eight {
     grid-area: eight;
-
-    &::before {
-        content: attr(data-button);
-        font-size: 30px;
-    }
 }
 
 .nine {
     grid-area: nine;
-
-    &::before {
-        content: attr(data-button);
-        font-size: 30px;
-    }
-}
-
-.AC {
-    grid-area: AC;
-
-    &::before {
-        content: attr(data-button);
-        font-size: 30px;
-    }
-
-    background-color: #999;
-
-    &:active {
-        background-color: #ffffff;
-    }
-}
-
-.equals {
-    grid-area: equals;
-
-    &::before {
-        content: attr(data-button);
-        font-size: 30px;
-    }
-
-    background-color: rgb(255, 123, 0);
-
-    &:active {
-        background-color: #ffffff;
-    }
 }
 
 .decimal {
     grid-area: decimal;
+}
 
-    &::before {
-        content: attr(data-button);
-        font-size: 30px;
+@keyframes buttonAnimation {
+    0% {
+        background-color: #999;
+    }
+
+    100% {
+        background-color: #444;
+    }
+}
+
+@keyframes equalsAnimation {
+    0% {
+        background-color: white;
+    }
+
+    100% {
+        background-color: rgb(255, 123, 0);
+    }
+}
+
+@keyframes acAnimation {
+    0% {
+        background-color: white;
+    }
+
+    100% {
+        background-color: #999;
     }
 }
