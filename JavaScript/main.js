@@ -5,6 +5,7 @@ class Calculator {
 
   calculation = [];
   result = 0;
+  regex = new RegExp(/[\+\-\*\/]/);
   // calculates a result from an operator, number1 and number2
   executeCalculation = {
     "+": function(number1, number2) {
@@ -13,10 +14,10 @@ class Calculator {
     "-": function(number1, number2) {
       return number1 - number2;
     },
-    "*": function(a, number2) {
+    "*": function(number1, number2) {
       return number1 * number2;
     },
-    "/": function(a, number2) {
+    "/": function(number1, number2) {
       return number1 / number2;
     }
   };
@@ -28,8 +29,7 @@ class Calculator {
 
   //Checks if parameter is an operator
   isOperator = function(n) {
-    var regex = RegExp("[-*+/]");
-    var isOperator = regex.test(n);
+    var isOperator = this.regex.test(n);
     return isOperator;
   };
 
